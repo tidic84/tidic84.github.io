@@ -1,0 +1,152 @@
+/* 
+############# 
+## General ## 
+############# 
+*/
+* {
+    cursor: none;
+
+    --main-color: #F1B4BB;
+    --second-color: #FDF0F0;
+    --main-color-bg: #1F4172;
+    --second-color-bg: #1F4172;
+}
+
+body {
+    background-color: var(--main-color-bg);
+    color: var(--main-color);
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    flex-direction: column;
+
+}
+
+a {
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+
+/* 
+###########
+## TITLE ##
+###########
+*/
+.container h1 {
+    position: relative;
+    font-size: 8rem;
+    margin-bottom: 0;
+    letter-spacing: -4px;
+
+    color: rgba(0, 0, 0, 0);
+    /* background-color: #FDF0F0; */
+    /* background-color: #1F4172; */
+}
+
+/* IM! Text */
+.container h1::before {
+    text-wrap: nowrap;
+    content: "HEY! I'M TIDIC";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    color: rgba(0, 0, 0, 0);
+    -webkit-text-stroke: 2px var(--main-color);
+
+    animation: animate 3s ease forwards;
+    overflow: hidden;
+}
+.container h1::after {
+    text-wrap: nowrap;
+    content: "HEY! I'M";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    color: var(--main-color);
+    -webkit-text-stroke: 0px;
+    animation: animate 2s ease-in-out forwards;
+    overflow: hidden;
+}
+
+@keyframes animate {
+    to {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* Description */
+
+.container .title_desc_container {
+    overflow: hidden;
+}
+
+.container .title_desc {
+    display: block;
+    margin-top: 0;
+    color: var(--second-color);
+    opacity: 0.5;
+    text-transform: uppercase;
+
+    overflow: hidden;
+    transform: translateY(-100%);
+    animation: slideReveal 1s ease forwards;
+}
+
+@keyframes slideReveal {
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+.container outline {
+    color: rgba(0, 0, 0, 0);
+    -webkit-text-stroke: 2px var(--second-color);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 15rem;
+
+}
+
+
+
+
+/* 
+############ 
+## Cursor ## 
+############ 
+*/
+.cursor-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--second-color);
+    z-index: 9999;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--second-color);
+    transition: 0.3s ease;
+    z-index: 9998;
+
+}
+
+.cursor-dot, .cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
