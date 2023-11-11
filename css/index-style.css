@@ -51,9 +51,10 @@ section {
 
 section .reveal {
     opacity: 0;
-    transform: translateY(-40%);
+    transform: translateY(-60px);
     transition: 0.5s ease-in-out;
 }
+
 section .reveal.active {
     opacity: 1;
     transform: translateY(0%);
@@ -79,6 +80,7 @@ h1 span {
 ###########
 */
 .home .container h1 {
+    margin-top: 8rem;
     position: relative;
     font-size: 8rem;
     margin-bottom: 0;
