@@ -127,6 +127,7 @@ h1 span {
     color: var(--second-color);
     opacity: 0;
     text-transform: uppercase;
+    text-align: center;
 
     overflow: hidden;
     transform: translateY(-100%);
@@ -143,6 +144,7 @@ h1 span {
     display: flex;
     justify-content: center;
     align-items: center;
+    align-self: center;
     flex-direction: column;
     margin-top: 15rem;
 
