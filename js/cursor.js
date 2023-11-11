@@ -5,7 +5,6 @@ function load() {
     var ev = window.event;
     cursorDot.style.left = `${ev.clientX}px`;
     cursorDot.style.top = `${ev.clientY}px`;
-    console.log(ev.clientX);
 }
 
 
@@ -17,7 +16,6 @@ document.addEventListener('mouseleave', () => {
 });
 
 function trackMouse(e) {
-    console.log(e.clientX);
     var posX = e.clientX;
     var posY = e.clientY;
     if(posX != undefined && posY != undefined) {

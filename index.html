@@ -2,13 +2,31 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Tidic Website</title>
+        <title>Tidic Portfolio</title>
         <link rel="stylesheet" href="css/index-style.css">
     </head>
 
-    <body onload="load()">
+    <body>
+        <a href="#" class="arrow">
+            &#x2191;
+        </a>
+
         <div class="cursor-dot"></div>
         <div class="cursor-outline"></div>
+
+        <nav class="navbar">
+            <div class="logo">
+                <h4><a href="">TIDIC.ME</a></h4>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+
+        
 
         <section class="home" id="home">
             <div class="container"> 
@@ -19,6 +37,16 @@
         <section id="about">
             <div class="container reveal">
                 <h1>ABOUT <span>ME</span></h1>
+                <div class="card">
+                    <p class="text">
+                        Hi ! My nickname is Tidic I am a 18 years old student in computer science at the University of Avignon. I'm passionate about new technologies and IT.
+                        <br><br>
+                        I've loved computers ever since I was a kid, because I grew up with them. I've done multiple projects in various fields, which have given me a few skills and a grounding in many areas.
+                        I love creating, from video editing to games. I'm currently interested in AI and VR.
+                        <br><br>
+                        I also like tennis and playing guitar, but also listening to music and playing video games.
+                    </p>
+                </div>
             </div>
         </section>
         <section id="projects">
@@ -32,6 +60,11 @@
         <script>
             window.addEventListener ('scroll', reveal);
             function reveal(){
+                var navbar = document.querySelector('.navbar');
+                var arrow = document.querySelector('.arrow');
+                navbar.classList.toggle('scroll_active', window.scrollY > 120);
+                arrow.classList.toggle('scroll_active', window.scrollY > 500);
+
                 var reveals = document.querySelectorAll ('.reveal');
                 for (var i = 0; i < reveals.length; i++){
                     var windowheight = window. innerHeight;
