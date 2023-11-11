@@ -229,7 +229,6 @@ h1 span {
 ## NAVB ## 
 ########## 
 */
-
 .navbar {
     position: fixed;
     top: 0;
@@ -246,7 +245,7 @@ h1 span {
 }
 
 .navbar .nav-links {
-    margin-right: 8rem;
+    margin-right: 5%;
 }
 
 .scroll_active {
@@ -289,6 +288,14 @@ h1 span {
     transform: translate(-5px, -5px);
 }
 
+
+
+
+/* 
+###########
+## Arrow ## 
+###########
+*/
 .arrow {
     opacity: 0;
     border: solid var(--main-color);
