@@ -16,8 +16,7 @@
 body {
     scroll-behavior: smooth;
     background-image: url(../res/img/background.png);
-    background-position: center;
-    background-size: 200%;
+    background-size: cover;
     margin: 0;
     padding: 0;
     color: var(--main-color);
