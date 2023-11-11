@@ -6,17 +6,48 @@
         <link rel="stylesheet" href="css/index-style.css">
     </head>
 
-    <body>
+    <body onload="load()">
         <div class="cursor-dot"></div>
         <div class="cursor-outline"></div>
-        <div class="container"> 
-            <h1>HEY! I'M TIDIC</h1>
-            <span class="title_desc_container"><h2 class="title_desc">Passionate about new technologies and IT. Computer science student at the University of Avignon</h2></span>
 
-            <a href=""></a>
-        </div>
+        <section class="home" id="home">
+            <div class="container"> 
+                <h1>HEY! I'M TIDIC</h1>
+                <span class="title_desc_container"><h2 class="title_desc">Passionate about new technologies and IT. Computer science student at the University of Avignon</h2></span>
+            </div>
+        </section>
+        <section id="about">
+            <div class="container reveal">
+                <h1>ABOUT <span>ME</span></h1>
+            </div>
+        </section>
+        <section id="projects">
+            <div class="container reveal">
+                <h1><span>MY</span> PROJECTS</h1>
+            </div>
+        </section>
+        
         
         <script src="js/cursor.js"></script>
+        <script>
+            window.addEventListener ('scroll', reveal);
+            function reveal(){
+                var reveals = document.querySelectorAll ('.reveal');
+                for (var i = 0; i < reveals.length; i++){
+                    var windowheight = window. innerHeight;
+                    var revealtop = reveals[i].getBoundingClientRect().top;
+                    var revealpoint = 150;
+                    if(revealtop > windowheight - revealpoint){
+                        reveals[i].classList.remove('active');
+                    }
+                    else{
+                        reveals[i].classList.add('active');
+                    }
+                }
+            }
+        </script>
     </body>
+
 </html>
+
 
