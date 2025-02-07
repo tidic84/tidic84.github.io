@@ -212,8 +212,8 @@ h1 span {
     align-items: center;
     flex-direction: column;
     margin: 3rem 2rem;
-    padding: 2rem;
-    border-radius: 1rem;
+    padding: 1rem;
+    border-radius: 2rem;
     background-color: #101b387e;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: 0.3s ease;
@@ -225,7 +225,8 @@ h1 span {
 
 .text {
     font-size: 30px;
-    margin: 2rem 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 /* 
@@ -331,4 +332,3 @@ h1 span {
     animation: arrow 1s ease-in-out infinite;
     transform: translateX(0%);
 }
-
