@@ -4,9 +4,20 @@
         <meta charset="UTF-8">
         <title>Tidic Portfolio</title>
         <link rel="stylesheet" href="css/index-style.css">
-    </head>
-
-    <body>
+    </head>    <body>
+        <!-- Système de parallax multicouches spatial -->
+        <div class="parallax-container">
+            <!-- Couches de background -->
+            <div class="bg-layer bg-layer-1"></div>
+            <div class="bg-layer bg-layer-2"></div>
+            <div class="bg-layer bg-layer-3"></div>
+            
+            <!-- Couches d'étoiles -->
+            <div class="stars-layer stars-layer-1"></div>
+            <div class="stars-layer stars-layer-2"></div>
+            <div class="stars-layer stars-layer-3"></div>
+        </div>
+        
         <a href="#" class="arrow">
             &#x2191;
         </a>
@@ -77,10 +88,9 @@
                     </div>
                 </div>
             </div>
-        </section>
-        
-        
+        </section>        
         <script src="js/cursor.js"></script>
+        <script src="js/space-parallax.js"></script>
         <script>
             window.addEventListener ('scroll', reveal);
             function reveal(){
