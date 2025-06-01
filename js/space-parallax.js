@@ -5,6 +5,25 @@ class SpaceParallax {
         this.ticking = false;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
+        // Système de contrôle de qualité adaptatif
+        this.performanceMonitor = {
+            frameCount: 0,
+            lastTime: performance.now(),
+            currentFPS: 60,
+            targetFPS: 60,
+            adaptiveQuality: true
+        };
+        
+        // Cache des éléments DOM pour éviter les requêtes répétées
+        this.elements = {
+            bgLayer1: null,
+            bgLayer2: null,
+            bgLayer3: null,
+            starsLayer1: null,
+            starsLayer2: null,
+            starsLayer3: null
+        };
+        
         // Configuration des vitesses de parallax pour chaque couche
         this.parallaxSpeeds = {
             bgLayer1: 0.05,   // Très lent - arrière-plan lointain
@@ -17,34 +36,120 @@ class SpaceParallax {
         
         this.init();
     }
-    
-    init() {
+      init() {
         if (this.prefersReducedMotion) {
             console.log('Animations réduites détectées - parallax désactivé');
             return;
         }
         
+        this.cacheElements();
         this.createStars();
         this.bindEvents();
+        this.startPerformanceMonitoring();
         this.updateParallax(); // Position initiale
     }
     
-    // Génération des étoiles avec distribution réaliste
+    // Système de monitoring des performances
+    startPerformanceMonitoring() {
+        if (!this.performanceMonitor.adaptiveQuality) return;
+        
+        setInterval(() => {
+            const now = performance.now();
+            const deltaTime = now - this.performanceMonitor.lastTime;
+            this.performanceMonitor.currentFPS = Math.round(1000 / deltaTime * this.performanceMonitor.frameCount);
+            
+            // Réduction adaptative si les performances chutent
+            if (this.performanceMonitor.currentFPS < 45) {
+                this.reduceQuality();
+            } else if (this.performanceMonitor.currentFPS > 55) {
+                this.restoreQuality();
+            }
+            
+            this.performanceMonitor.frameCount = 0;
+            this.performanceMonitor.lastTime = now;
+        }, 1000);
+    }
+    
+    // Réduction de la qualité en cas de baisse de performances
+    reduceQuality() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((star, index) => {
+            if (index % 3 === 0) { // Cacher 1 étoile sur 3
+                star.style.display = 'none';
+            }
+        });
+        console.log('🔧 Qualité réduite pour maintenir les performances');
+    }
+    
+    // Restauration de la qualité
+    restoreQuality() {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.style.display = 'block';
+        });
+    }
+      // Cache des éléments DOM pour optimiser les performances
+    cacheElements() {
+        this.elements.bgLayer1 = document.querySelector('.bg-layer-1');
+        this.elements.bgLayer2 = document.querySelector('.bg-layer-2');
+        this.elements.bgLayer3 = document.querySelector('.bg-layer-3');
+        this.elements.starsLayer1 = document.querySelector('.stars-layer-1');
+        this.elements.starsLayer2 = document.querySelector('.stars-layer-2');
+        this.elements.starsLayer3 = document.querySelector('.stars-layer-3');
+        
+        // Configuration de l'Intersection Observer
+        this.setupIntersectionObserver();
+    }
+    
+    // Configuration de l'Intersection Observer pour optimiser l'affichage
+    setupIntersectionObserver() {
+        if (!('IntersectionObserver' in window)) return;
+        
+        const options = {
+            root: null,
+            rootMargin: '100px',
+            threshold: 0.1
+        };
+        
+        this.intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const element = entry.target;
+                if (entry.isIntersecting) {
+                    element.style.willChange = 'transform';
+                } else {
+                    element.style.willChange = 'auto';
+                }
+            });
+        }, options);
+        
+        // Observer les sections pour optimiser les transformations
+        document.querySelectorAll('section').forEach(section => {
+            this.intersectionObserver.observe(section);
+        });
+    }
+      // Génération des étoiles avec distribution réaliste et optimisée
     createStars() {
+        // Réduction significative du nombre d'étoiles pour améliorer les performances
         const layers = [
-            { element: '.stars-layer-1', count: 80, sizeRange: [1, 2] },
-            { element: '.stars-layer-2', count: 60, sizeRange: [2, 3] },
-            { element: '.stars-layer-3', count: 40, sizeRange: [3, 4] }
+            { element: '.stars-layer-1', count: 80, sizeRange: [1, 2] },  
+            { element: '.stars-layer-2', count: 60, sizeRange: [2, 3] }, 
+            { element: '.stars-layer-3', count: 40, sizeRange: [3, 4] } 
         ];
         
         layers.forEach((layer, layerIndex) => {
             const container = document.querySelector(layer.element);
             if (!container) return;
             
+            // Utilisation d'un fragment pour éviter les reflows multiples
+            const fragment = document.createDocumentFragment();
+            
             for (let i = 0; i < layer.count; i++) {
                 const star = this.createStar(layer.sizeRange, layerIndex);
-                container.appendChild(star);
+                fragment.appendChild(star);
             }
+            
+            // Ajout en une seule fois pour optimiser le DOM
+            container.appendChild(fragment);
         });
     }
     
@@ -82,28 +187,64 @@ class SpaceParallax {
         star.style.opacity = Math.max(0.2, Math.min(1, opacity));
         
         return star;
-    }
-    
-    // Gestion des événements
+    }    // Gestion des événements avec throttling adaptatif optimisé
     bindEvents() {
-        // Écoute du scroll avec throttling optimisé
+        // Variables pour un throttling adaptatif
+        let lastScrollTime = 0;
+        let throttleDelay = 16; // Démarrage à ~60fps
+        let scrollVelocity = 0;
+        let lastScrollY = 0;
+        
+        // Écoute du scroll avec throttling ultra-optimisé et adaptatif
         window.addEventListener('scroll', () => {
-            this.scrollY = window.pageYOffset;
+            const now = performance.now();
+            const currentScrollY = window.pageYOffset;
+            
+            // Calcul de la vélocité pour adapter le throttling
+            scrollVelocity = Math.abs(currentScrollY - lastScrollY);
+            
+            // Adaptation dynamique du throttling selon la vitesse de scroll
+            if (scrollVelocity > 50) {
+                throttleDelay = 8; // Scroll rapide = throttling plus réactif
+            } else if (scrollVelocity > 20) {
+                throttleDelay = 12;
+            } else {
+                throttleDelay = 16; // Scroll normal
+            }
+            
+            // Throttling temporel pour éviter trop d'appels
+            if (now - lastScrollTime < throttleDelay) {
+                return;
+            }
+            
+            this.scrollY = currentScrollY;
+            lastScrollY = currentScrollY;
+            lastScrollTime = now;
             this.requestTick();
         }, { passive: true });
         
-        // Gestion du redimensionnement
+        // Gestion du redimensionnement avec debounce optimisé
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            this.requestTick();
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.cacheElements(); // Re-cache après resize
+                this.requestTick();
+            }, 150); // Debounce de 150ms pour éviter trop d'appels
         }, { passive: true });
+        
+        // Optimisation de visibilité pour économiser les ressources
+        document.addEventListener('visibilitychange', () => {
+            this.performanceMonitor.adaptiveQuality = !document.hidden;
+        });
     }
-    
-    // Système de throttling pour optimiser les performances
+      // Système de throttling pour optimiser les performances
     requestTick() {
         if (!this.ticking) {
             this.ticking = true;
             requestAnimationFrame(() => {
                 this.updateParallax();
+                this.performanceMonitor.frameCount++;
                 this.ticking = false;
             });
         }
@@ -119,55 +260,69 @@ class SpaceParallax {
         // Mise à jour des couches d'étoiles
         this.updateStarsLayers(scrollY);
     }
-    
-    // Parallax des couches de background
+      // Parallax des couches de background avec éléments cachés
     updateBackgroundLayers(scrollY) {
-        const bgLayer1 = document.querySelector('.bg-layer-1');
-        const bgLayer2 = document.querySelector('.bg-layer-2');
-        const bgLayer3 = document.querySelector('.bg-layer-3');
-        
-        if (bgLayer1) {
+        if (this.elements.bgLayer1) {
             const offset1 = scrollY * this.parallaxSpeeds.bgLayer1;
-            bgLayer1.style.transform = `translate3d(0, ${offset1}px, 0)`;
+            this.elements.bgLayer1.style.transform = `translate3d(0, ${offset1}px, 0)`;
         }
         
-        if (bgLayer2) {
+        if (this.elements.bgLayer2) {
             const offset2 = scrollY * this.parallaxSpeeds.bgLayer2;
-            bgLayer2.style.transform = `translate3d(0, ${offset2}px, 0)`;
+            this.elements.bgLayer2.style.transform = `translate3d(0, ${offset2}px, 0)`;
         }
         
-        if (bgLayer3) {
+        if (this.elements.bgLayer3) {
             const offset3 = scrollY * this.parallaxSpeeds.bgLayer3;
-            bgLayer3.style.transform = `translate3d(0, ${offset3}px, 0)`;
+            this.elements.bgLayer3.style.transform = `translate3d(0, ${offset3}px, 0)`;
         }
     }
     
-    // Parallax des couches d'étoiles
+    // Parallax des couches d'étoiles avec éléments cachés
     updateStarsLayers(scrollY) {
-        const starsLayer1 = document.querySelector('.stars-layer-1');
-        const starsLayer2 = document.querySelector('.stars-layer-2');
-        const starsLayer3 = document.querySelector('.stars-layer-3');
-        
-        if (starsLayer1) {
+        if (this.elements.starsLayer1) {
             const offset1 = scrollY * this.parallaxSpeeds.stars1;
-            starsLayer1.style.transform = `translate3d(0, ${offset1}px, 0)`;
+            this.elements.starsLayer1.style.transform = `translate3d(0, ${offset1}px, 0)`;
         }
         
-        if (starsLayer2) {
+        if (this.elements.starsLayer2) {
             const offset2 = scrollY * this.parallaxSpeeds.stars2;
-            starsLayer2.style.transform = `translate3d(0, ${offset2}px, 0)`;
+            this.elements.starsLayer2.style.transform = `translate3d(0, ${offset2}px, 0)`;
         }
         
-        if (starsLayer3) {
+        if (this.elements.starsLayer3) {
             const offset3 = scrollY * this.parallaxSpeeds.stars3;
-            starsLayer3.style.transform = `translate3d(0, ${offset3}px, 0)`;
+            this.elements.starsLayer3.style.transform = `translate3d(0, ${offset3}px, 0)`;
         }
     }
-    
-    // Méthode pour ajuster dynamiquement les vitesses (optionnel)
+      // Méthode pour ajuster dynamiquement les vitesses (optionnel)
     updateSpeeds(newSpeeds) {
         this.parallaxSpeeds = { ...this.parallaxSpeeds, ...newSpeeds };
         this.updateParallax();
+    }
+    
+    // Méthode de nettoyage pour libérer les ressources
+    destroy() {
+        if (this.intersectionObserver) {
+            this.intersectionObserver.disconnect();
+        }
+        
+        // Nettoyage des éléments
+        Object.keys(this.elements).forEach(key => {
+            this.elements[key] = null;
+        });
+        
+        console.log('🧹 SpaceParallax nettoyé et ressources libérées');
+    }
+    
+    // Méthode publique pour diagnostiquer les performances
+    getPerformanceStats() {
+        return {
+            currentFPS: this.performanceMonitor.currentFPS,
+            adaptiveQuality: this.performanceMonitor.adaptiveQuality,
+            totalStars: document.querySelectorAll('.star').length,
+            visibleStars: document.querySelectorAll('.star:not([style*="display: none"])').length
+        };
     }
 }
 
@@ -194,12 +349,26 @@ window.SpaceParallaxAPI = {
     },
     disable: () => {
         if (window.spaceParallax) {
+            window.spaceParallax.destroy();
             window.spaceParallax = null;
         }
     },
     updateSpeeds: (speeds) => {
         if (window.spaceParallax) {
             window.spaceParallax.updateSpeeds(speeds);
+        }
+    },
+    getStats: () => {
+        return window.spaceParallax ? window.spaceParallax.getPerformanceStats() : null;
+    },
+    reduceQuality: () => {
+        if (window.spaceParallax) {
+            window.spaceParallax.reduceQuality();
+        }
+    },
+    restoreQuality: () => {
+        if (window.spaceParallax) {
+            window.spaceParallax.restoreQuality();
         }
     }
 };

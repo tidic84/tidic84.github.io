@@ -619,57 +619,53 @@ Couches d'Étoiles
     position: absolute;
     background: var(--second-color);
     border-radius: 50%;
-    animation: twinkle 4s infinite ease-in-out;
-    box-shadow: 0 0 2px currentColor;
-    transition: all 0.3s ease;
+    animation: twinkle 3.5s infinite ease-in-out;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
+/* Animations optimisées pour les performances */
 @keyframes twinkle {
     0%, 100% { 
-        opacity: 0.4;
-        transform: scale(1);
-        box-shadow: 0 0 2px currentColor;
+        opacity: 0.5;
+        transform: translate3d(0, 0, 0) scale(1);
     }
     50% { 
         opacity: 1;
-        transform: scale(1.2);
-        box-shadow: 0 0 6px currentColor, 0 0 10px currentColor;
+        transform: translate3d(0, 0, 0) scale(1.1);
     }
 }
 
 .star.pink {
     background: var(--main-color);
-    animation: twinkle-pink 5s infinite ease-in-out;
+    animation: twinkle-pink 4.5s infinite ease-in-out;
 }
 
 @keyframes twinkle-pink {
     0%, 100% { 
-        opacity: 0.3;
-        transform: scale(1);
-        box-shadow: 0 0 2px var(--main-color);
+        opacity: 0.4;
+        transform: translate3d(0, 0, 0) scale(1);
     }
     50% { 
         opacity: 0.9;
-        transform: scale(1.3);
-        box-shadow: 0 0 8px var(--main-color), 0 0 12px var(--main-color);
+        transform: translate3d(0, 0, 0) scale(1.15);
     }
 }
 
 .star.blue {
     background: #8ec5ff;
-    animation: twinkle-blue 6s infinite ease-in-out;
+    animation: twinkle-blue 5.5s infinite ease-in-out;
 }
 
 @keyframes twinkle-blue {
     0%, 100% { 
-        opacity: 0.2;
-        transform: scale(1);
-        box-shadow: 0 0 2px #8ec5ff;
+        opacity: 0.3;
+        transform: translate3d(0, 0, 0) scale(1);
     }
     50% { 
         opacity: 0.8;
-        transform: scale(1.4);
-        box-shadow: 0 0 10px #8ec5ff, 0 0 15px #8ec5ff;
+        transform: translate3d(0, 0, 0) scale(1.2);
     }
 }
 
