@@ -216,12 +216,12 @@ h1 span {
     margin: 3rem 2rem;
     padding: 2rem;
     border-radius: 2rem;
-    background: linear-gradient(135deg, #101b387e 0%, #1f417275 50%, #101b387e 100%);
+    background: linear-gradient(135deg, #101b3850 0%, #1f417250 50%, #101b3850 100%);
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(241, 180, 187, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(241, 180, 187, 0.2);
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(241, 180, 187, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(241, 180, 187, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     width: 50%;    backdrop-filter: blur(15px);
@@ -247,10 +247,10 @@ h1 span {
 .card:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 
-        0 30px 60px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(241, 180, 187, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    border-color: rgba(241, 180, 187, 0.4);
+        0 30px 60px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(241, 180, 187, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(241, 180, 187, 0.2);
 }
 
 .text {
@@ -263,159 +263,261 @@ h1 span {
     font-weight: 400;
 }
 
-/* Styles spécifiques pour les projets */
-#projects .card {
-    background: linear-gradient(135deg, #1f417275 0%, #101b387e 50%, #2a4f8575 100%);
+/* Styles pour la grille de projets */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem 0;
 }
 
-#projects .project {
-    background: rgba(31, 65, 114, 0.3);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1rem 0;
-    border-left: 4px solid var(--main-color);
-    transition: all 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
+.project-card {
+    background: linear-gradient(135deg, #1f417250 0%, #101b3850 50%, #2a4f8550 100%);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(241, 180, 187, 0.15);
+    box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(241, 180, 187, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-#projects .project::before {
+.project-card::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(241, 180, 187, 0.05) 50%, transparent 70%);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 180, 187, 0.08), transparent);
+    transition: left 0.8s ease;
 }
 
-#projects .project:hover::before {
-    transform: translateX(100%);
+.project-card:hover::before {
+    left: 100%;
 }
 
-#projects .project:hover {
-    transform: translateX(10px);
-    background: rgba(31, 65, 114, 0.5);
-    border-left-color: var(--second-color);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+.project-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    background: linear-gradient(135deg, #1f417260 0%, #101b3860 50%, #2a4f8560 100%);
+    border-color: rgba(241, 180, 187, 0.25);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(241, 180, 187, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-#projects .project h2 {
-    margin: 0 0 0.5rem 0;
+.project-card h2 {
+    margin: 0;
     color: var(--main-color);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 600;
     font-family: 'Space Grotesk', sans-serif;
     letter-spacing: 0.3px;
+    text-align: center;
 }
 
-#projects .project a {
+.project-card p {
+    margin: 0;
+    color: var(--second-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.8;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.project-link {
     color: var(--second-color);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     position: relative;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
+    text-align: center;
+    padding: 0.8rem 1.5rem;
+    background: rgba(241, 180, 187, 0.1);
+    border-radius: 0.8rem;
+    border: 1px solid rgba(241, 180, 187, 0.2);
+    display: inline-block;
+    margin-top: auto;
 }
 
-#projects .project a::after {
+.project-link::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
+    bottom: 0;
+    left: 50%;
     width: 0;
     height: 2px;
     background: var(--main-color);
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
-#projects .project a:hover {
+.project-link:hover {
     color: var(--main-color);
+    background: rgba(241, 180, 187, 0.15);
+    border-color: rgba(241, 180, 187, 0.3);
+    transform: translateY(-2px);
 }
 
-#projects .project a:hover::after {
-    width: 100%;
+.project-link:hover::after {
+    width: 60%;
 }
 
-/* Styles spécifiques pour le contact */
-#contact .card {
-    background: linear-gradient(135deg, #101b387e 0%, #2a4f8575 50%, #1f417275 100%);
-}
-
-#contact .text h2 {
-    color: var(--main-color);
-    margin: 1.5rem 0 0.5rem 0;
-    font-size: 1.4rem;
-    font-weight: 600;
-    display: flex;
+/* Ajustement du container pour les projets */
+#projects .container {
     align-items: center;
-    gap: 0.5rem;
+}
+
+/* Styles pour la grille de contact */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 700px;
+    margin: 2rem 0;
+}
+
+.contact-card {
+    background: linear-gradient(135deg, #101b3850 0%, #2a4f8550 50%, #1f417250 100%);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(241, 180, 187, 0.15);
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(241, 180, 187, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    text-align: center;
+}
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 180, 187, 0.08), transparent);
+    transition: left 0.8s ease;
+}
+
+.contact-card:hover::before {
+    left: 100%;
+}
+
+.contact-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: linear-gradient(135deg, #101b3860 0%, #2a4f8560 50%, #1f417260 100%);
+    border-color: rgba(241, 180, 187, 0.25);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(241, 180, 187, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.2rem;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.contact-card h2 {
+    margin: 0;
+    color: var(--main-color);
+    font-size: 1.2rem;
+    font-weight: 600;
     font-family: 'Space Grotesk', sans-serif;
     letter-spacing: 0.3px;
 }
 
-#contact .text h2:first-child {
-    margin-top: 0;
-}
-
-#contact .text h2::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--main-color);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.2); }
-}
-
-#contact .text a {
+.contact-link {
     color: var(--second-color);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
-    display: inline-block;
     position: relative;
-    padding: 0.3rem 0;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(241, 180, 187, 0.1);
+    border-radius: 0.6rem;
+    border: 1px solid rgba(241, 180, 187, 0.2);
+    display: inline-block;
+    word-break: break-all;
 }
 
-#contact .text a::before {
+.contact-link::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -0.5rem;
     bottom: 0;
-    width: 3px;
+    left: 50%;
+    width: 0;
+    height: 2px;
     background: var(--main-color);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
-#contact .text a:hover::before {
-    transform: scaleY(1);
-}
-
-#contact .text a:hover {
+.contact-link:hover {
     color: var(--main-color);
-    transform: translateX(0.5rem);
+    background: rgba(241, 180, 187, 0.15);
+    border-color: rgba(241, 180, 187, 0.3);
+    transform: translateY(-2px);
 }
 
-#contact .text span {
+.contact-link:hover::after {
+    width: 60%;
+}
+
+.contact-username {
     color: var(--second-color);
     font-weight: 500;
-    opacity: 0.9;
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(241, 180, 187, 0.1);
+    border-radius: 0.6rem;
+    border: 1px solid rgba(241, 180, 187, 0.2);
+    display: inline-block;
+}
+
+/* Ajustement du container pour les contacts */
+#contact .container {
+    align-items: center;
+}
+
+/* Animation pour les icônes */
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 0.8; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.05); 
+    }
 }
 
 /* 
@@ -728,14 +830,38 @@ Optimisations Performance
     }
 }
 
+/* Styles responsive pour les cartes de projets */
 @media (max-width: 768px) {
-    .bg-layer-2,
-    .bg-layer-3 {
-        filter: none;
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
     }
     
-    .stars-layer-2,
-    .stars-layer-3 {
-        opacity: 0.5;
+    .project-card {
+        padding: 1.5rem;
+    }
+    
+    .project-card h2 {
+        font-size: 1.4rem;
+    }
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin: 1.5rem 0;
+    }
+    
+    .contact-card {
+        padding: 1.2rem;
+    }
+    
+    .contact-icon {
+        font-size: 1.8rem;
+    }
+    
+    .card {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+        width: auto;
     }
 }
