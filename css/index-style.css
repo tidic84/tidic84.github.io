@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 /* 
 ############# 
@@ -25,7 +25,7 @@ body {
     padding: 0;
     color: var(--main-color);
     display: flex;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     flex-direction: column;
     
 }
@@ -66,7 +66,9 @@ h1 {
     padding: 0;
     font-weight: 800;
     text-transform: uppercase;
-} 
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.5px;
+}
 
 h1 span {
     color: rgba(0, 0, 0, 0);
@@ -141,6 +143,9 @@ h1 span {
     opacity: 0;
     text-transform: uppercase;
     text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
 
     overflow: hidden;
     transform: translateY(-150%);
@@ -212,21 +217,208 @@ h1 span {
     align-items: center;
     flex-direction: column;
     margin: 3rem 2rem;
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 2rem;
-    background-color: #101b387e;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: 0.3s ease;
+    background: linear-gradient(135deg, #101b387e 0%, #1f417275 50%, #101b387e 100%);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(241, 180, 187, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(241, 180, 187, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
-    width: 50%;
-    backdrop-filter: blur(5px);
-    font-family: 'Rubik' , sans-serif;
+    width: 50%;    backdrop-filter: blur(15px);
+    font-family: 'Inter', sans-serif;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 180, 187, 0.1), transparent);
+    transition: left 0.8s ease;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(241, 180, 187, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(241, 180, 187, 0.4);
 }
 
 .text {
-    font-size: 30px;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 0;
+    text-align: left;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+/* Styles spécifiques pour les projets */
+#projects .card {
+    background: linear-gradient(135deg, #1f417275 0%, #101b387e 50%, #2a4f8575 100%);
+}
+
+#projects .project {
+    background: rgba(31, 65, 114, 0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-left: 4px solid var(--main-color);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+#projects .project::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(241, 180, 187, 0.05) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+#projects .project:hover::before {
+    transform: translateX(100%);
+}
+
+#projects .project:hover {
+    transform: translateX(10px);
+    background: rgba(31, 65, 114, 0.5);
+    border-left-color: var(--second-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+#projects .project h2 {
+    margin: 0 0 0.5rem 0;
+    color: var(--main-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+#projects .project a {
+    color: var(--second-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+}
+
+#projects .project a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--main-color);
+    transition: width 0.3s ease;
+}
+
+#projects .project a:hover {
+    color: var(--main-color);
+}
+
+#projects .project a:hover::after {
+    width: 100%;
+}
+
+/* Styles spécifiques pour le contact */
+#contact .card {
+    background: linear-gradient(135deg, #101b387e 0%, #2a4f8575 50%, #1f417275 100%);
+}
+
+#contact .text h2 {
+    color: var(--main-color);
+    margin: 1.5rem 0 0.5rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+#contact .text h2:first-child {
+    margin-top: 0;
+}
+
+#contact .text h2::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--main-color);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+#contact .text a {
+    color: var(--second-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    padding: 0.3rem 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+}
+
+#contact .text a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -0.5rem;
+    bottom: 0;
+    width: 3px;
+    background: var(--main-color);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+#contact .text a:hover::before {
+    transform: scaleY(1);
+}
+
+#contact .text a:hover {
+    color: var(--main-color);
+    transform: translateX(0.5rem);
+}
+
+#contact .text span {
+    color: var(--second-color);
+    font-weight: 500;
+    opacity: 0.9;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
 }
 
 /* 
@@ -273,6 +465,7 @@ h1 span {
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-left: 2rem;
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .navbar li {
@@ -283,6 +476,8 @@ h1 span {
     font-weight: 700;
     padding: 0;
     transition: 1s ease;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.5px;
 
 }
 .navbar a {
