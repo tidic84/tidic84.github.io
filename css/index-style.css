@@ -8,7 +8,7 @@
 
 * {
     cursor: none;
-    scroll-behavior: smooth;
+    /* scroll-behavior désactivé pour utiliser le smooth scrolling JS plus performant */
 
     --main-color: #F1B4BB;
     --second-color: #FDF0F0;
@@ -18,7 +18,7 @@
 
 
 body {
-    scroll-behavior: smooth;
+    /* scroll-behavior désactivé pour utiliser le smooth scrolling JS plus performant */
     background: var(--main-color-bg);
     margin: 0;
     padding: 0;

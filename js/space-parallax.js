@@ -2,8 +2,17 @@
 class SpaceParallax {
     constructor() {
         this.scrollY = 0;
+        this.targetScrollY = 0;
+        this.currentScrollY = 0;
         this.ticking = false;
         this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        // Configuration du smooth scrolling
+        this.smoothScrolling = {
+            enabled: true,
+            lerp: 0.1, // Facteur d'interpolation (0.05 = très fluide, 0.2 = plus réactif)
+            threshold: 0.1 // Seuil minimal de mouvement
+        };
         
         // Système de contrôle de qualité adaptatif
         this.performanceMonitor = {
@@ -35,8 +44,7 @@ class SpaceParallax {
         };
         
         this.init();
-    }
-      init() {
+    }    init() {
         if (this.prefersReducedMotion) {
             console.log('Animations réduites détectées - parallax désactivé');
             return;
@@ -46,7 +54,28 @@ class SpaceParallax {
         this.createStars();
         this.bindEvents();
         this.startPerformanceMonitoring();
+        this.startSmoothScrolling();
         this.updateParallax(); // Position initiale
+    }
+    
+    // Démarrage du système de smooth scrolling
+    startSmoothScrolling() {
+        if (!this.smoothScrolling.enabled) return;
+        
+        const updateSmooth = () => {
+            // Interpolation linéaire pour un mouvement fluide
+            const diff = this.targetScrollY - this.currentScrollY;
+            
+            if (Math.abs(diff) > this.smoothScrolling.threshold) {
+                this.currentScrollY += diff * this.smoothScrolling.lerp;
+                this.scrollY = this.currentScrollY;
+                this.requestTick();
+            }
+            
+            requestAnimationFrame(updateSmooth);
+        };
+        
+        requestAnimationFrame(updateSmooth);
     }
     
     // Système de monitoring des performances
@@ -195,7 +224,7 @@ class SpaceParallax {
         let scrollVelocity = 0;
         let lastScrollY = 0;
         
-        // Écoute du scroll avec throttling ultra-optimisé et adaptatif
+        // Écoute du scroll avec smooth scrolling intégré
         window.addEventListener('scroll', () => {
             const now = performance.now();
             const currentScrollY = window.pageYOffset;
@@ -206,10 +235,13 @@ class SpaceParallax {
             // Adaptation dynamique du throttling selon la vitesse de scroll
             if (scrollVelocity > 50) {
                 throttleDelay = 8; // Scroll rapide = throttling plus réactif
+                this.smoothScrolling.lerp = 0.15; // Plus réactif pour le scroll rapide
             } else if (scrollVelocity > 20) {
                 throttleDelay = 12;
+                this.smoothScrolling.lerp = 0.12;
             } else {
                 throttleDelay = 16; // Scroll normal
+                this.smoothScrolling.lerp = 0.08; // Plus fluide pour le scroll lent
             }
             
             // Throttling temporel pour éviter trop d'appels
@@ -217,10 +249,17 @@ class SpaceParallax {
                 return;
             }
             
-            this.scrollY = currentScrollY;
+            // Mise à jour du scroll target pour le smooth scrolling
+            this.targetScrollY = currentScrollY;
+            
+            // Fallback direct si smooth scrolling désactivé
+            if (!this.smoothScrolling.enabled) {
+                this.scrollY = currentScrollY;
+                this.requestTick();
+            }
+            
             lastScrollY = currentScrollY;
             lastScrollTime = now;
-            this.requestTick();
         }, { passive: true });
         
         // Gestion du redimensionnement avec debounce optimisé
@@ -294,11 +333,24 @@ class SpaceParallax {
             const offset3 = scrollY * this.parallaxSpeeds.stars3;
             this.elements.starsLayer3.style.transform = `translate3d(0, ${offset3}px, 0)`;
         }
-    }
-      // Méthode pour ajuster dynamiquement les vitesses (optionnel)
+    }    // Méthode pour ajuster dynamiquement les vitesses (optionnel)
     updateSpeeds(newSpeeds) {
         this.parallaxSpeeds = { ...this.parallaxSpeeds, ...newSpeeds };
         this.updateParallax();
+    }
+    
+    // Contrôle du smooth scrolling
+    setSmoothScrolling(enabled, lerp = 0.1) {
+        this.smoothScrolling.enabled = enabled;
+        this.smoothScrolling.lerp = lerp;
+        
+        if (!enabled) {
+            // Si désactivé, synchroniser immédiatement
+            this.currentScrollY = this.targetScrollY;
+            this.scrollY = this.currentScrollY;
+        }
+        
+        console.log(`🌊 Smooth scrolling ${enabled ? 'activé' : 'désactivé'} (lerp: ${lerp})`);
     }
     
     // Méthode de nettoyage pour libérer les ressources
@@ -321,7 +373,14 @@ class SpaceParallax {
             currentFPS: this.performanceMonitor.currentFPS,
             adaptiveQuality: this.performanceMonitor.adaptiveQuality,
             totalStars: document.querySelectorAll('.star').length,
-            visibleStars: document.querySelectorAll('.star:not([style*="display: none"])').length
+            visibleStars: document.querySelectorAll('.star:not([style*="display: none"])').length,
+            smoothScrolling: {
+                enabled: this.smoothScrolling.enabled,
+                lerp: this.smoothScrolling.lerp,
+                currentPosition: Math.round(this.currentScrollY),
+                targetPosition: Math.round(this.targetScrollY),
+                distance: Math.round(Math.abs(this.targetScrollY - this.currentScrollY))
+            }
         };
     }
 }
@@ -369,6 +428,23 @@ window.SpaceParallaxAPI = {
     restoreQuality: () => {
         if (window.spaceParallax) {
             window.spaceParallax.restoreQuality();
+        }
+    },
+    // Nouveaux contrôles pour le smooth scrolling
+    enableSmoothScrolling: (lerp = 0.1) => {
+        if (window.spaceParallax) {
+            window.spaceParallax.setSmoothScrolling(true, lerp);
+        }
+    },
+    disableSmoothScrolling: () => {
+        if (window.spaceParallax) {
+            window.spaceParallax.setSmoothScrolling(false);
+        }
+    },
+    setSmoothness: (lerp) => {
+        if (window.spaceParallax && lerp >= 0.01 && lerp <= 1) {
+            window.spaceParallax.smoothScrolling.lerp = lerp;
+            console.log(`🌊 Fluidité réglée à ${lerp} (0.01=très fluide, 0.3=réactif)`);
         }
     }
 };

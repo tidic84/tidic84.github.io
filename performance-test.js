@@ -58,6 +58,12 @@ console.log('• SpaceParallaxAPI.reduceQuality() - Réduire la qualité');
 console.log('• SpaceParallaxAPI.restoreQuality() - Restaurer la qualité');
 console.log('• SpaceParallaxAPI.disable() - Désactiver le parallax');
 console.log('• SpaceParallaxAPI.enable() - Réactiver le parallax');
+console.log('\n🌊 Contrôles Smooth Scrolling:');
+console.log('• SpaceParallaxAPI.setSmoothness(0.05) - Très fluide');
+console.log('• SpaceParallaxAPI.setSmoothness(0.15) - Équilibré');
+console.log('• SpaceParallaxAPI.setSmoothness(0.25) - Réactif');
+console.log('• SpaceParallaxAPI.disableSmoothScrolling() - Désactiver');
+console.log('• SpaceParallaxAPI.enableSmoothScrolling() - Réactiver');
 
 // Test 6: Surveillance continue des performances
 setInterval(() => {
