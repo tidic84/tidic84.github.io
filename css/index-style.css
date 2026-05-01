@@ -250,17 +250,48 @@ h1 span {
 .project-card {
     background: rgba(31, 65, 114, 0.25);
     border-radius: 0.8rem;
-    padding: 1.8rem;
     border: 1px solid rgba(241, 180, 187, 0.12);
     transition: border-color 0.2s ease, background-color 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    overflow: hidden;
 }
 
 .project-card:hover {
     background: rgba(31, 65, 114, 0.35);
     border-color: rgba(241, 180, 187, 0.25);
+}
+
+.project-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: rgba(16, 27, 56, 0.5);
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid rgba(241, 180, 187, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.project-thumb[data-project="gmao"]    { background-image: url(../res/img/background.png); }
+.project-thumb[data-project="ashline"] { background-image: url(../res/img/background2.png); }
+.project-thumb[data-project="hestia"]  { background-image: url(../res/img/background3.png); }
+.project-thumb[data-project="miyuki"]  { background-image: url(../res/img/1%20%281%29.png); }
+.project-thumb[data-project="jssalles"]{ background-image: url(../res/img/1%20%282%29.png); }
+.project-thumb[data-project="cosmos"]  { background-image: url(../res/img/background.png); }
+
+.project-body {
+    padding: 1.4rem 1.6rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
 }
 
 .project-card h2 {
@@ -285,22 +316,24 @@ h1 span {
 }
 
 .project-link {
-    color: var(--second-color);
+    color: var(--main-color);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     text-align: center;
     padding: 0.6rem 1.2rem;
     border-radius: 0.3rem;
-    border: 1px solid rgba(241, 180, 187, 0.25);
+    border: 1px solid var(--main-color);
+    background: transparent;
     display: inline-block;
     margin-top: auto;
 }
 
 .project-link:hover {
-    color: var(--main-color);
+    color: var(--main-color-bg);
+    background: var(--main-color);
     border-color: var(--main-color);
 }
 
@@ -351,8 +384,18 @@ h1 span {
 }
 
 .contact-icon {
-    font-size: 2rem;
-    margin-bottom: 0.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    margin-bottom: 0.4rem;
+    color: var(--main-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-icon svg {
+    width: 100%;
+    height: 100%;
 }
 
 .contact-card h2 {
@@ -365,22 +408,23 @@ h1 span {
 }
 
 .contact-link {
-    color: var(--second-color);
+    color: var(--main-color);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
     border-radius: 0.3rem;
-    border: 1px solid rgba(241, 180, 187, 0.25);
+    border: 1px solid var(--main-color);
+    background: transparent;
     display: inline-block;
     word-break: break-all;
 }
 
 .contact-link:hover {
-    color: var(--main-color);
-    border-color: var(--main-color);
+    color: var(--main-color-bg);
+    background: var(--main-color);
 }
 
 .contact-username {
@@ -732,7 +776,8 @@ Optimisations Performance
     }
     
     .contact-icon {
-        font-size: 1.8rem;
+        width: 1.9rem;
+        height: 1.9rem;
     }
     
     .card {
